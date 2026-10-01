@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Tiếng Trung Qua Câu Chuyện - StoryChinese</title>
+    <style>
+        :root {
+            --primary-color: #de2910; /* Màu đỏ truyền thống / hiện đại */
+            --secondary-color: #ffde75;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --pinyin-color: #e67e22;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin-top: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Controls / Toolbars */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            background-color: #ffffff;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover, .btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-audio {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            color: white;
+        }
+
+        .btn-audio:hover {
+            background-color: #219150;
+        }
+
+        /* Story Card */
+        .story-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .story-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-title-zh {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+
+        .story-title-py {
+            color: var(--pinyin-color);
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        .story-title-vi {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        /* Story Paragraphs */
+        .paragraph {
+            margin-bottom: 1.5rem;
+        }
+
+        .sentence {
+            display: inline-block;
+            margin-bottom: 0.8rem;
+            margin-right: 0.3rem;
+        }
+
+        .word-group {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 2px;
+        }
+
+        .py {
+            font-size: 0.9rem;
+            color: var(--pinyin-color);
+            height: 1.2rem;
+            transition: opacity 0.3s;
+        }
+
+        .zh {
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .translation {
+            color: #555;
+            background-color: #f1f8ff;
+            padding: 0.5rem 1rem;
+            border-left: 4px solid #3498db;
+            border-radius: 0 8px 8px 0;
+            margin-top: 0.3rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Utility classes for toggling */
+        .hide-pinyin .py {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .hide-translation .translation {
+            display: none;
+        }
+
+        /* Vocabulary Section */
+        .vocab-section {
+            background: #fff8e7;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid #ffeaa7;
+        }
+
+        .vocab-section h3 {
+            margin-top: 0;
+            color: #d35400;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .vocab-item {
+            background: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .vocab-zh {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .vocab-py {
+            color: var(--pinyin-color);
+            font-size: 0.85rem;
+        }
+
+        .vocab-vi {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📖 学中文 · Học Tiếng Trung Qua Câu Chuyện</h1>
+        <p>Luyện đọc, phát âm và từ vựng qua các câu chuyện ngắn thú vị</p>
+    </header>
+
+    <div class="container" id="storyContainer">
+        
+        <!-- Thanh điều khiển -->
+        <div class="controls">
+            <div>
+                <button class="btn" id="togglePinyinBtn" onclick="togglePinyin()">Ẩn Pinyin</button>
+                <button class="btn" id="toggleTransBtn" onclick="toggleTranslation()">Ẩn Dịch Nghĩa</button>
+            </div>
+            <button class="btn btn-audio" onclick="playAudio()">🔊 Nghe Đọc Toàn Bài</button>
+        </div>
+
+        <!-- Nội dung câu chuyện -->
+        <div class="story-card">
+            <div class="story-header">
+                <div class="story-title-zh">小猫找快乐</div>
+                <span class="story-title-py py-text">Xiǎomāo zhǎo kuàilè</span>
+                <div class="story-title-vi">Chú mèo con đi tìm hạnh phúc</div>
+            </div>
+
+            <div class="story-content">
+                <!-- Đoạn 1 -->
+                <div class="paragraph">
+                    <div class="sentence">
+                        <span class="word-group"><span class="py">Xiǎomāo</span><span class="zh">小猫</span></span>
+                        <span class="word-group"><span class="py">问</span><span class="zh">问</span></span>
+                        <span class="word-group"><span class="py">māmā:</span><span class="zh">妈妈：</span></span>
+                        <span class="word-group"><span class="py">"Māmā,</span><span class="zh">“妈妈，</span></span>
+                        <span class="word-group"><span class="py">kuàilè</span><span class="zh">快乐</span></span>
+                        <span class="word-group"><span class="py">zài</span><span class="zh">在</span></span>
+                        <span class="word-group"><span class="py">nǎlǐ?"</span><span class="zh">哪里？”</span></span>
+                    </div>
+                    <div class="translation">Mèo con hỏi mẹ: "Mẹ ơi, hạnh phúc ở đâu ạ?"</div>
+                </div>
+
+                <!-- Đoạn 2 -->
+                <div class="paragraph">
+                    <div class="sentence">
+                        <span class="word-group"><span class="py">Māmā</span><span class="zh">妈妈</span></span>
+                        <span class="word-group"><span class="py">xiàozhe</span><span class="zh">笑着</span></span>
+                        <span class="word-group"><span class="py">shuō:</span><span class="zh">说：</span></span>
+                        <span class="word-group"><span class="py">"Kuàilè</span><span class="zh">“快乐</span></span>
+                        <span class="word-group"><span class="py">jiù</span><span class="zh">就</span></span>
+                        <span class="word-group"><span class="py">zài</span><span class="zh">在</span></span>
+                        <span class="word-group"><span class="py">nǐ de</span><span class="zh">你的</span></span>
+                        <span class="word-group"><span class="py">wěiba</span><span class="zh">尾巴</span></span>
+                        <span class="word-group"><span class="py">shang."</span><span class="zh">上。”</span></span>
+                    </div>
+                    <div class="translation">Mẹ mỉm cười nói: "Hạnh phúc nằm ngay trên cái đuôi của con đấy."</div>
+                </div>
+
+                <!-- Đoạn 3 -->
+                <div class="paragraph">
+                    <div class="sentence">
+                        <span class="word-group"><span class="py">Yúshì,</span><span class="zh">于是，</span></span>
+                        <span class="word-group"><span class="py">xiǎomāo</span><span class="zh">小猫</span></span>
+                        <span class="word-group"><span class="py">bìnɡ</span><span class="zh">不停</span></span>
+                        <span class="word-group"><span class="py">de</span><span class="zh">地</span></span>
+                        <span class="word-group"><span class="py">zhuānɡ</span><span class="zh">追</span></span>
+                        <span class="word-group"><span class="py">zìjǐ de</span><span class="zh">自己的</span></span>
+                        <span class="word-group"><span class="py">wěiba,</span><span class="zh">尾巴，</span></span>
+                        <span class="word-group"><span class="py">kěshì</span><span class="zh">可是</span></span>
+                        <span class="word-group"><span class="py">zǒngshì</span><span class="zh">总是</span></span>
+                        <span class="word-group"><span class="py">zhuō bú zhào.</span><span class="zh">捉不到。</span></span>
+                    </div>
+                    <div class="translation">Thế là mèo con liên tục đuổi theo cái đuôi của mình, nhưng mãi mà không bắt được.</div>
+                </div>
+
+                <!-- Đoạn 4 -->
+                <div class="paragraph">
+                    <div class="sentence">
+                        <span class="word-group"><span class="py">Māmā</span><span class="zh">妈妈</span></span>
+                        <span class="word-group"><span class="py">shuō:</span><span class="zh">说：</span></span>
+                        <span class="word-group"><span class="py">"Nǐ</span><span class="zh">“你</span></span>
+                        <span class="word-group"><span class="py">búyòng</span><span class="zh">不用</span></span>
+                        <span class="word-group"><span class="py">kèyì</span><span class="zh">刻意</span></span>
+                        <span class="word-group"><span class="py">qù zhuī.</span><span class="zh">去追。</span></span>
+                        <span class="word-group"><span class="py">Zhǐyào</span><span class="zh">只要</span></span>
+                        <span class="word-group"><span class="py">nǐ</span><span class="zh">你</span></span>
+                        <span class="word-group"><span class="py">向前走，</span><span class="zh">向前走，</span></span>
+                        <span class="word-group"><span class="py">kuàilè</span><span class="zh">快乐</span></span>
+                        <span class="word-group"><span class="py">jiù huì</span><span class="zh">就会</span></span>
+                        <span class="word-group"><span class="py">yìzhí</span><span class="zh">一直</span></span>
+                        <span class="word-group"><span class="py">gēnzhe nǐ."</span><span class="zh">跟着你。”</span></span>
+                    </div>
+                    <div class="translation">Mẹ nói: "Con không cần cố tình đuổi theo đâu. Chỉ cần con bước về phía trước, hạnh phúc sẽ luôn đi theo con."</div>
+                </div>
+            </div>
+
+            <!-- Bảng Từ Vựng Key -->
+            <div class="vocab-section">
+                <h3>💡 Từ vựng trọng tâm trong bài (生词)</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-item">
+                        <div class="vocab-zh">快乐</div>
+                        <div class="vocab-py">kuàilè</div>
+                        <div class="vocab-vi">Hạnh phúc, vui vẻ</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="vocab-zh">尾巴</div>
+                        <div class="vocab-py">wěiba</div>
+                        <div class="vocab-vi">Cái đuôi</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="vocab-zh">追</div>
+                        <div class="vocab-py">zhuī</div>
+                        <div class="vocab-vi">Đuổi theo</div>
+                    </div>
+                    <div class="vocab-item">
+                        <div class="vocab-zh">只要</div>
+                        <div class="vocab-py">zhǐyào</div>
+                        <div class="vocab-vi">Chỉ cần</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Trạng thái hiển thị
+        let showPinyin = true;
+        let showTrans = true;
+
+        // Toggle Pinyin
+        function togglePinyin() {
+            const container = document.getElementById('storyContainer');
+            const btn = document.getElementById('togglePinyinBtn');
+            showPinyin = !showPinyin;
+
+            if (showPinyin) {
+                container.classList.remove('hide-pinyin');
+                btn.innerText = 'Ẩn Pinyin';
+            } else {
+                container.classList.add('hide-pinyin');
+                btn.innerText = 'Hiện Pinyin';
+            }
+        }
+
+        // Toggle Dịch Nghĩa
+        function toggleTranslation() {
+            const container = document.getElementById('storyContainer');
+            const btn = document.getElementById('toggleTransBtn');
+            showTrans = !showTrans;
+
+            if (showTrans) {
+                container.classList.remove('hide-translation');
+                btn.innerText = 'Ẩn Dịch Nghĩa';
+            } else {
+                container.classList.add('hide-translation');
+                btn.innerText = 'Hiện Dịch Nghĩa';
+            }
+        }
+
+        // Đọc giọng phát âm tiếng Trung bằng Web Speech API
+        function playAudio() {
+            // Lấy toàn bộ văn bản chữ Hán trong bài
+            const zhElements = document.querySelectorAll('.story-content .zh');
+            let fullText = "";
+            zhElements.forEach(el => {
+                fullText += el.innerText;
+            });
+
+            if ('speechSynthesis' in window) {
+                // Hủy các câu đang đọc dở (nếu có)
+                window.speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(fullText);
+                utterance.lang = 'zh-CN'; // Ngôn ngữ tiếng Trung Quốc
+                utterance.rate = 0.8; // Tốc độ đọc chậm rãi cho người mới học
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Trình duyệt của bạn không hỗ trợ tính năng phát âm tự động.");
+            }
+        }
+    </script>
+</body>
+</html>
